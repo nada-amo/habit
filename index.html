@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>عاداتي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:        #fdf8f2;
+  --bg2:       #fef3e8;
+  --card:      #ffffff;
+  --border:    #e8ddd0;
+  --text:      #2d2015;
+  --muted:     #9c8878;
+  --sun:       #f59e0b;
+  --sun2:      #fbbf24;
+  --sand:      #e8c99a;
+  --radius:    18px;
+  --shadow:    0 2px 16px rgba(180,130,60,0.10);
+  --shadow-lg: 0 6px 32px rgba(180,130,60,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Tajawal',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding:0 0 80px;
+}
+
+/* ── TOP BAR ── */
+.top-bar{
+  background:linear-gradient(135deg,#fef3e8 0%,#fde9c9 100%);
+  border-bottom:1.5px solid #f0dfc0;
+  padding:22px 20px 18px;
+  position:sticky;top:0;z-index:100;
+}
+.top-bar-inner{
+  max-width:520px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.greeting h1{
+  font-size:1.5rem;font-weight:900;
+  color:var(--text);line-height:1.1;
+}
+.greeting .sub{
+  font-size:0.82rem;color:var(--muted);margin-top:3px;
+}
+.sun-icon{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;
+  box-shadow:0 4px 20px rgba(245,158,11,0.4);
+  animation:sunPulse 3s ease-in-out infinite;
+}
+@keyframes sunPulse{
+  0%,100%{box-shadow:0 4px 20px rgba(245,158,11,0.4);}
+  50%{box-shadow:0 4px 32px rgba(245,158,11,0.7);}
+}
+
+/* ── PROGRESS STRIP ── */
+.progress-strip{
+  max-width:520px;margin:16px auto 0;
+  padding:0 20px;
+}
+.strip-track{
+  background:#f0dfc0;border-radius:100px;height:8px;overflow:hidden;
+}
+.strip-fill{
+  height:100%;border-radius:100px;
+  background:linear-gradient(90deg,#f59e0b,#fbbf24);
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+.strip-labels{
+  display:flex;justify-content:space-between;margin-top:6px;
+  font-size:0.75rem;color:var(--muted);
+}
+.strip-labels .done-count{color:var(--sun);font-weight:700;}
+
+/* ── CONTENT ── */
+.content{max-width:520px;margin:0 auto;padding:20px 16px 0;}
+
+/* ── ADD HABIT CARD ── */
+.add-card{
+  background:var(--card);
+  border:1.5px dashed var(--sand);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+.add-card-title{
+  font-size:0.78rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;
+}
+.add-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.emoji-btn{
+  width:44px;height:44px;border-radius:12px;
+  border:1.5px solid var(--border);background:var(--bg);
+  font-size:1.25rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .2s,transform .15s;flex-shrink:0;
+}
+.emoji-btn:hover{border-color:var(--sun);transform:scale(1.05);}
+.color-btn{
+  width:44px;height:44px;border-radius:12px;
+  border:2.5px solid var(--border);
+  background:#f59e0b;cursor:pointer;flex-shrink:0;
+  position:relative;overflow:hidden;
+  transition:transform .15s,border-color .2s;
+}
+.color-btn:hover{transform:scale(1.05);border-color:var(--muted);}
+.color-btn input[type=color]{
+  position:absolute;inset:-6px;width:calc(100%+12px);height:calc(100%+12px);
+  opacity:0;cursor:pointer;border:none;
+}
+.habit-name-input{
+  flex:1;min-width:120px;
+  background:var(--bg);border:1.5px solid var(--border);
+  border-radius:12px;padding:11px 14px;
+  font-family:'Tajawal',sans-serif;font-size:0.95rem;color:var(--text);
+  outline:none;transition:border-color .2s;
+}
+.habit-name-input::placeholder{color:var(--muted);}
+.habit-name-input:focus{border-color:var(--sun);}
+.add-submit{
+  padding:11px 18px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#fff;font-family:'Tajawal',sans-serif;font-size:0.9rem;
+  font-weight:700;cursor:pointer;
+  transition:transform .15s,box-shadow .2s;flex-shrink:0;
+  box-shadow:0 3px 14px rgba(245,158,11,0.35);
+}
+.add-submit:hover{transform:translateY(-1px);box-shadow:0 5px 20px rgba(245,158,11,0.5);}
+.add-submit:active{transform:translateY(0);}
+
+/* ── EMOJI PICKER ── */
+.emoji-picker{
+  display:none;
+  flex-wrap:wrap;gap:6px;margin-top:10px;
+  background:var(--bg2);border-radius:12px;padding:10px;
+  border:1px solid var(--border);
+}
+.emoji-picker.open{display:flex;}
+.ep-item{
+  width:36px;height:36px;border-radius:8px;border:none;
+  background:var(--card);cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,transform .1s;
+}
+.ep-item:hover{background:var(--sand);transform:scale(1.1);}
+
+/* ── HABITS SECTION LABEL ── */
+.section-label{
+  font-size:0.75rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+  margin-bottom:10px;padding-right:2px;
+}
+
+/* ── HABIT CARD ── */
+#habits-list{display:flex;flex-direction:column;gap:10px;}
+.habit-card{
+  background:var(--card);border-radius:var(--radius);
+  border:1.5px solid var(--border);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  animation:fadeUp .3s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.habit-main{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 14px 14px 16px;cursor:pointer;
+  transition:background .2s;
+}
+.habit-main:hover{background:#fdf6ec;}
+
+.habit-check{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  border:2.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;transition:all .2s;
+  background:var(--bg);
+}
+.habit-card.done .habit-check{
+  color:#fff;border-color:transparent;
+  transform:scale(1.08);
+}
+.habit-emoji{font-size:1.3rem;flex-shrink:0;}
+.habit-info{flex:1;min-width:0;}
+.habit-name{font-size:0.95rem;font-weight:600;line-height:1.2;}
+.habit-card.done .habit-name{text-decoration:line-through;color:var(--muted);}
+.habit-meta{
+  font-size:0.72rem;color:var(--muted);margin-top:3px;
+  display:flex;gap:8px;align-items:center;
+}
+.streak-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:0.72rem;font-weight:700;
+  padding:2px 8px;border-radius:20px;
+}
+.habit-actions{display:flex;gap:4px;align-items:center;}
+.icon-btn{
+  width:32px;height:32px;border-radius:10px;border:none;
+  background:transparent;cursor:pointer;font-size:0.85rem;
+  color:var(--muted);transition:background .2s,color .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.icon-btn:hover{background:var(--bg2);color:var(--text);}
+.del-btn:hover{background:#fde8e8!important;color:#e05555!important;}
+
+/* Color bar at top of card */
+.habit-color-bar{height:4px;width:100%;}
+
+/* ── HISTORY PANEL ── */
+.history-panel{
+  display:none;
+  padding:0 16px 14px;
+  border-top:1px solid var(--border);
+}
+.history-panel.open{display:block;}
+.history-label{
+  font-size:0.72rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+  margin-bottom:10px;padding-top:12px;
+}
+/* Month navigator */
+.month-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.month-nav button{
+  width:28px;height:28px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg);cursor:pointer;font-size:0.8rem;
+  color:var(--text);transition:background .15s;
+}
+.month-nav button:hover{background:var(--sand);}
+.month-nav span{font-size:0.82rem;font-weight:700;color:var(--text);}
+/* Day headers */
+.cal-days-header{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:3px;margin-bottom:4px;
+}
+.cal-day-label{
+  text-align:center;font-size:0.62rem;color:var(--muted);font-weight:600;
+  letter-spacing:.05em;
+}
+/* Calendar grid */
+.cal-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:3px;
+}
+.cal-cell{
+  aspect-ratio:1;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:500;
+  cursor:default;transition:transform .1s;
+  color:var(--muted);background:var(--bg);
+  border:1px solid transparent;
+}
+.cal-cell.done-day{color:#fff!important;}
+.cal-cell.today{border:1.5px solid var(--sun)!important;color:var(--text)!important;font-weight:700;}
+.cal-cell.today.done-day{border-color:transparent!important;}
+.cal-cell.empty{background:transparent;border:none;}
+.cal-cell.future{opacity:.3;}
+.cal-summary{
+  margin-top:10px;font-size:0.78rem;color:var(--muted);
+  display:flex;gap:14px;
+}
+.cal-summary span{font-weight:700;color:var(--text);}
+
+/* ── EMPTY STATE ── */
+.empty-state{
+  text-align:center;padding:40px 20px;color:var(--muted);
+}
+.empty-state .e-icon{font-size:2.5rem;margin-bottom:10px;}
+.empty-state p{font-size:0.88rem;}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#2d2015;color:#fef3e8;
+  padding:10px 22px;border-radius:100px;
+  font-size:0.85rem;font-weight:600;
+  opacity:0;pointer-events:none;z-index:999;
+  transition:opacity .25s,transform .25s;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="greeting">
+      <h1 id="greeting-text">صباح النور ☀️</h1>
+      <div class="sub" id="today-date"></div>
+    </div>
+    <div class="sun-icon">🌤</div>
+  </div>
+  <div class="progress-strip">
+    <div class="strip-track">
+      <div class="strip-fill" id="strip-fill" style="width:0%"></div>
+    </div>
+    <div class="strip-labels">
+      <span class="done-count" id="done-count">٠ مكتملة</span>
+      <span id="total-count">٠ عادة</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ADD CARD -->
+  <div class="add-card">
+    <div class="add-card-title">➕ عادة جديدة</div>
+    <div class="add-row">
+      <button class="emoji-btn" id="emoji-btn" title="اختاري إيموجي">⭐</button>
+      <div class="color-btn" id="color-btn-wrap" title="اختاري اللون">
+        <input type="color" id="color-input" value="#f59e0b"/>
+      </div>
+      <input type="text" class="habit-name-input" id="habit-input"
+             placeholder="اسم العادة..." maxlength="60"/>
+      <button class="add-submit" id="add-btn">إضافة</button>
+    </div>
+    <div class="emoji-picker" id="emoji-picker"></div>
+  </div>
+
+  <!-- HABITS -->
+  <div class="section-label">عاداتي اليومية</div>
+  <div id="habits-list"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONSTANTS ───────────────────────────────────────────────────────────────
+const EMOJIS = [
+  '⭐','🌱','💧','🏃','📚','🍎','✍️','🧘','💪','🌙','🔥','🎯',
+  '🕊️','🌸','☕','🥗','🚶','🛏️','🎵','🧹','💊','🥤','🌿','🧠',
+  '❤️','🦋','🌞','🍋','🏋️','🧴','📝','🎨','🫧','🫀','🌊','🍵'
+];
+const DAYS_AR  = ['أحد','اثن','ثلث','أرب','خمس','جمع','سبت'];
+const MONTHS_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
+                   'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+function todayKey(){ return new Date().toISOString().slice(0,10); }
+function dateKey(d){ return d.toISOString().slice(0,10); }
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+function load(){
+  try{ return JSON.parse(localStorage.getItem('habits_morning_v1')||'null')||{habits:[],history:{}}; }
+  catch{ return {habits:[],history:{}}; }
+}
+function save(){ localStorage.setItem('habits_morning_v1', JSON.stringify(state)); }
+
+let state = load();
+let selectedEmoji = '⭐';
+let selectedColor = '#f59e0b';
+// per-habit open history month: { habitId: {year,month} }
+const historyMonth = {};
+
+// ── DATE HEADER ───────────────────────────────────────────────────────────────
+(function(){
+  const d = new Date();
+  const h = d.getHours();
+  let g = h < 12 ? 'صباح النور ☀️' : h < 17 ? 'مساء الخير 🌤' : 'مساء النور 🌙';
+  document.getElementById('greeting-text').textContent = g;
+  document.getElementById('today-date').textContent =
+    d.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+})();
+
+// ── EMOJI PICKER ──────────────────────────────────────────────────────────────
+const epWrap   = document.getElementById('emoji-picker');
+const emojiBtn = document.getElementById('emoji-btn');
+
+EMOJIS.forEach(em=>{
+  const b = document.createElement('button');
+  b.className='ep-item'; b.textContent=em;
+  b.onclick=()=>{
+    selectedEmoji=em; emojiBtn.textContent=em;
+    epWrap.classList.remove('open');
+  };
+  epWrap.appendChild(b);
+});
+emojiBtn.onclick=()=> epWrap.classList.toggle('open');
+
+// ── COLOR PICKER ──────────────────────────────────────────────────────────────
+const colorInput = document.getElementById('color-input');
+const colorBtnWrap = document.getElementById('color-btn-wrap');
+colorInput.addEventListener('input',()=>{
+  selectedColor = colorInput.value;
+  colorBtnWrap.style.background = selectedColor;
+});
+
+// ── ADD HABIT ─────────────────────────────────────────────────────────────────
+document.getElementById('add-btn').onclick = addHabit;
+document.getElementById('habit-input').addEventListener('keydown',e=>{ if(e.key==='Enter') addHabit(); });
+
+function addHabit(){
+  const inp  = document.getElementById('habit-input');
+  const name = inp.value.trim();
+  if(!name) return showToast('✍️ اكتبي اسم العادة أولاً');
+  state.habits.push({
+    id: Date.now().toString(),
+    name,
+    emoji: selectedEmoji,
+    color: selectedColor
+  });
+  save(); inp.value='';
+  epWrap.classList.remove('open');
+  render(); showToast('✅ تمت الإضافة!');
+}
+
+// ── TOGGLE ────────────────────────────────────────────────────────────────────
+function toggle(id){
+  const today = todayKey();
+  if(!state.history[today]) state.history[today]=[];
+  const idx = state.history[today].indexOf(id);
+  if(idx===-1){ state.history[today].push(id); showToast('🎉 أحسنتِ!'); }
+  else state.history[today].splice(idx,1);
+  save(); render();
+}
+
+// ── DELETE ────────────────────────────────────────────────────────────────────
+function deleteHabit(id){
+  state.habits = state.habits.filter(h=>h.id!==id);
+  Object.keys(state.history).forEach(day=>{
+    state.history[day] = state.history[day].filter(x=>x!==id);
+  });
+  delete historyMonth[id];
+  save(); render();
+}
+
+// ── STREAK ────────────────────────────────────────────────────────────────────
+function calcStreak(id){
+  let s=0;
+  const t=new Date();
+  for(let i=0;i<365;i++){
+    const d=new Date(t); d.setDate(t.getDate()-i);
+    if((state.history[dateKey(d)]||[]).includes(id)) s++;
+    else break;
+  }
+  return s;
+}
+
+// ── DONE DAYS FOR HABIT ────────────────────────────────────────────────────────
+function doneDaysForHabit(id){
+  return Object.entries(state.history)
+    .filter(([,ids])=>ids.includes(id))
+    .map(([day])=>day);
+}
+
+// ── CALENDAR RENDER ───────────────────────────────────────────────────────────
+function renderCalendar(id, color, panelEl){
+  const h = historyMonth[id] || (()=>{ const n=new Date(); return {year:n.getFullYear(),month:n.getMonth()}; })();
+  historyMonth[id] = h;
+  const doneDays = new Set(doneDaysForHabit(id));
+  const todayStr = todayKey();
+
+  const firstDay = new Date(h.year, h.month, 1);
+  const lastDay  = new Date(h.year, h.month+1, 0);
+  const startDow = firstDay.getDay(); // 0=Sun
+  const totalDays= lastDay.getDate();
+  const today    = new Date();
+  const todayD   = new Date(today.getFullYear(),today.getMonth(),today.getDate());
+
+  // count done this month
+  let doneThisMonth=0;
+  for(let d=1;d<=totalDays;d++){
+    const k = `${h.year}-${String(h.month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    if(doneDays.has(k)) doneThisMonth++;
+  }
+  const daysElapsed = h.year===today.getFullYear()&&h.month===today.getMonth()
+    ? today.getDate() : totalDays;
+
+  panelEl.innerHTML = `
+    <div class="history-label">📅 سجل الأداء</div>
+    <div class="month-nav">
+      <button onclick="changeMonth('${id}','${color}',-1,this)">›</button>
+      <span>${MONTHS_AR[h.month]} ${h.year}</span>
+      <button onclick="changeMonth('${id}','${color}',1,this)">‹</button>
+    </div>
+    <div class="cal-days-header">
+      ${DAYS_AR.map(d=>`<div class="cal-day-label">${d}</div>`).join('')}
+    </div>
+    <div class="cal-grid" id="cg-${id}"></div>
+    <div class="cal-summary">
+      أتممتِ <span>${doneThisMonth}</span> من أصل <span>${daysElapsed}</span> يوم
+    </div>
+  `;
+
+  const grid = panelEl.querySelector(`#cg-${id}`);
+
+  // empty cells before first day
+  for(let i=0;i<startDow;i++){
+    const c=document.createElement('div');
+    c.className='cal-cell empty'; grid.appendChild(c);
+  }
+
+  for(let d=1;d<=totalDays;d++){
+    const k = `${h.year}-${String(h.month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cellDate = new Date(h.year,h.month,d);
+    const isFuture = cellDate > todayD;
+    const isDone   = doneDays.has(k);
+    const isToday  = k===todayStr;
+
+    const c=document.createElement('div');
+    c.className='cal-cell'
+      + (isDone  ? ' done-day' : '')
+      + (isToday ? ' today'    : '')
+      + (isFuture? ' future'   : '');
+    c.textContent = d;
+    if(isDone) c.style.background = color;
+    grid.appendChild(c);
+  }
+}
+
+window.changeMonth = function(id, color, dir, btn){
+  const h = historyMonth[id] || {year:new Date().getFullYear(),month:new Date().getMonth()};
+  let m = h.month + dir, y = h.year;
+  if(m>11){m=0;y++;} if(m<0){m=11;y--;}
+  historyMonth[id]={year:y,month:m};
+  const panel = btn.closest('.history-panel');
+  const habit = state.habits.find(x=>x.id===id);
+  if(panel&&habit) renderCalendar(id, habit.color, panel);
+};
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function toArabicNum(n){ return String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]); }
+
+function render(){
+  const today = todayKey();
+  const list  = document.getElementById('habits-list');
+  const done  = state.habits.filter(h=>(state.history[today]||[]).includes(h.id)).length;
+  const total = state.habits.length;
+
+  // progress bar
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('strip-fill').style.width = pct+'%';
+  document.getElementById('done-count').textContent = toArabicNum(done)+' مكتملة';
+  document.getElementById('total-count').textContent = toArabicNum(total)+' عادة';
+
+  if(total===0){
+    list.innerHTML=`<div class="empty-state">
+      <div class="e-icon">🌱</div>
+      <p>أضيفي أول عادة وابدئي يومك بخطوة!</p>
+    </div>`; return;
+  }
+
+  // remember which panels are open
+  const openPanels = new Set();
+  document.querySelectorAll('.history-panel.open').forEach(p=>{
+    openPanels.add(p.dataset.habitId);
+  });
+
+  list.innerHTML='';
+  state.habits.forEach((h,i)=>{
+    const isDone = (state.history[today]||[]).includes(h.id);
+    const streak = calcStreak(h.id);
+    const allDone = doneDaysForHabit(h.id);
+    const firstDay = allDone.length ? allDone.sort()[0] : null;
+
+    const card = document.createElement('div');
+    card.className = 'habit-card'+(isDone?' done':'');
+    card.style.animationDelay = (i*.05)+'s';
+
+    // light tinted card bg when done
+    const colorHex = h.color||'#f59e0b';
+
+    card.innerHTML = `
+      <div class="habit-color-bar" style="background:${colorHex}"></div>
+      <div class="habit-main" data-id="${h.id}">
+        <div class="habit-check" style="${isDone?`background:${colorHex};`:''}">
+          ${isDone?'✓':''}
+        </div>
+        <span class="habit-emoji">${h.emoji}</span>
+        <div class="habit-info">
+          <div class="habit-name">${h.name}</div>
+          <div class="habit-meta">
+            <span class="streak-badge"
+              style="background:${colorHex}22;color:${colorHex}">
+              🔥 ${streak} يوم متواصل
+            </span>
+            ${firstDay ? `<span>بدأتِ: ${firstDay}</span>` : ''}
+          </div>
+        </div>
+        <div class="habit-actions">
+          <button class="icon-btn" data-hist="${h.id}" title="السجل">📅</button>
+          <button class="icon-btn del-btn" data-del="${h.id}" title="حذف">✕</button>
+        </div>
+      </div>
+      <div class="history-panel ${openPanels.has(h.id)?'open':''}"
+           data-habit-id="${h.id}" id="hp-${h.id}"></div>
+    `;
+
+    // toggle done
+    card.querySelector('.habit-main').addEventListener('click', e=>{
+      if(e.target.closest('[data-hist]')||e.target.closest('[data-del]')) return;
+      toggle(h.id);
+    });
+    // history
+    card.querySelector('[data-hist]').addEventListener('click', e=>{
+      e.stopPropagation();
+      const panel = document.getElementById('hp-'+h.id);
+      if(panel.classList.contains('open')){
+        panel.classList.remove('open');
+      } else {
+        panel.classList.add('open');
+        renderCalendar(h.id, colorHex, panel);
+      }
+    });
+    // delete
+    card.querySelector('[data-del]').addEventListener('click', e=>{
+      e.stopPropagation();
+      if(confirm('تأكيد حذف "'+h.name+'"؟')) deleteHabit(h.id);
+    });
+
+    // re-render open history panel
+    if(openPanels.has(h.id)){
+      requestAnimationFrame(()=> renderCalendar(h.id, colorHex, document.getElementById('hp-'+h.id)));
+    }
+
+    list.appendChild(card);
+  });
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ── DEFAULT HABITS ────────────────────────────────────────────────────────────
+if(state.habits.length===0){
+  const defaults=[
+    {name:'١٠٠٠٠ خطوة يومية',emoji:'🚶',color:'#10b981'},
+    {name:'شرب ٢.٥ لتر ماء',  emoji:'💧',color:'#3b82f6'},
+    {name:'تمارين رياضية',     emoji:'💪',color:'#f59e0b'},
+    {name:'نوم مبكر',          emoji:'🌙',color:'#8b5cf6'},
+    {name:'وجبات صحية',        emoji:'🥗',color:'#ec4899'},
+  ];
+  defaults.forEach((d,i)=> state.habits.push({id:'def_'+i,...d}));
+  save();
+}
+
+render();
+</script>
+</body>
+</html>
